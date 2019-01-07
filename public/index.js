@@ -145,7 +145,59 @@ const actors = [{
     'amount': 0
   }]
 }];
+function price(){
+	var timeComponent;
+	var peopleComponent;
+	for(var i=0;i<bars.length;i++)
+	{
+		for(var j=0;j<events.length;j++)
+		{
+			if(bars[i].id==events[j].barId)
+			{
+			timeComponent=events[j].time*bars[i].pricePerHour;
+			peopleComponent=events[j].persons*bars[i].pricePerPerson;
+			events[j].price=timeComponent+peopleComponent;
+			}
+		}
+	}
+}
 
+function pricedecrease(){
+	var timeComponent;
+	var peopleComponent;
+	for(var j=0;j<events.length;j++)
+	{
+		if(events[j].persons>10 && events[j].persons<=20) events[j].price=events[j].price*0.9;
+		if(events[j].persons>20 && events[j].persons<=60) events[j].price=events[j].price*0.7;
+		if(events[j].persons>60) events[j].price=events[j].price*0.5;
+		
+	}
+	
+}	
+
+function commi(){
+	var commission;
+	var insurance;
+	var treasury;
+	var privateaser;
+	for(var j=0;j<events.length;j++){
+	commission=events[j].price*0.3;
+	insurance=commission*0.5;
+	treasury=events[j].persons;
+	privateaser=commission-(insurance+treasury)
+	
+	events[j].commission.insurance=insurance;
+	events[j].commission.treasury=treasury;
+	events[j].commission.privateaser=privateaser;
+	}
+	
+}
+
+
+
+price();
+pricedecrease();
+commi();
 console.log(bars);
 console.log(events);
 console.log(actors);
