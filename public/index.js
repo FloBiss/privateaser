@@ -163,8 +163,7 @@ function price(){
 }
 
 function pricedecrease(){
-	var timeComponent;
-	var peopleComponent;
+
 	for(var j=0;j<events.length;j++)
 	{
 		if(events[j].persons>10 && events[j].persons<=20) events[j].price=events[j].price*0.9;
@@ -192,12 +191,45 @@ function commi(){
 	}
 	
 }
+function Deduction()
+{
+	price();
+	pricedecrease();
+	commi();
+	for(var j=0;j<events.length;j++)
+	{
+		if(events[j].options.deductibleReduction==true)
+		{
+			events[j].price+=events[j].persons;
+			events[j].commission.privateaser+=events[j].persons;
+		}
+	}
+}
+function Pay()
+{
+	for(var i=0;i<actors.length;i++)
+	{
+		for(var j=0;j<events.length;j++)
+		{
+			if(events[j].id==actors[i].eventId)
+			{
+				actors[i].payment[0].amount=events[j].price;
+				actors[i].payment[1].amount=events[j].price-(events[j].commission.insurance+events[j].commission.treasury+events[j].commission.privateaser);
+				actors[i].payment[2].amount=events[j].commission.insurance
+				actors[i].payment[3].amount=events[j].commission.treasury;
+				actors[i].payment[4].amount=events[j].commission.privateaser;
+				
+			}
+		}
+	}
+}
 
 
-
-price();
-pricedecrease();
-commi();
+//price();
+//pricedecrease();
+//commi();
+Deduction();
+Pay();
 console.log(bars);
 console.log(events);
 console.log(actors);
